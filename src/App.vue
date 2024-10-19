@@ -5,6 +5,7 @@
 <script>
 import ExtremeEditor from './components/ExremeEditor.vue'
 
+
 export default {
   name: 'App',
   components: {

@@ -1,5 +1,46 @@
-<script setup>
+<script>
+export default {
+  name: 'ExtremeEditor',
+  data() {
+    return {
+      slots: Array(9).fill().map(() => Array(9).fill(null)),
+      craftedItem: '',
+      resultText: ''
+    };
+  },
+  methods: {
+    showRecipeText() {
+      this.generateRecipeText();
 
+      this.$nextTick(() => {
+        const resultElement = this.$refs.result;
+        if (resultElement) {
+          resultElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    },
+
+    generateRecipeText() {
+      const formattedSlots = this.slots.map(row =>
+          `${row.map(item => item === null ? 'null' : `'${item}'`).join(', ')}`
+      ).join(',' + "<br>");
+
+      this.resultText = `mods.avaritia.ExtremeCrafting.addShaped(${this.craftedItem},<br>[[${formattedSlots}]]);`;
+    },
+
+    copyToClipboard() {
+      const resultText = this.resultText.replace(/<br\s*\/?>/g, '\n');
+
+      navigator.clipboard.writeText(resultText)
+          .then(() => {
+            alert('Рецепт скопирован в буфер обмена!');
+          })
+          .catch(err => {
+            console.error('Ошибка при копировании: ', err);
+          });
+    }
+  }
+}
 </script>
 
 <template>
@@ -8,7 +49,7 @@
       <div id="dire-crafting-slots">
         <div v-for="row in 9" :key="row" :class="`row row-${row}`">
           <div v-for="slot in 9" :key="slot">
-            <textarea :class="`slot slot-${slot * row}`"></textarea>
+            <textarea v-model="slots[row - 1][slot - 1]" :class="`slot slot-${slot * row}`"></textarea>
           </div>
           <br/>
         </div>
@@ -16,27 +57,15 @@
       <div id="dire-crafting-right-side">
         <div/>
         <div id="crafted-item-slot-block">
-          <textarea id="crafted-item-slot"></textarea>
+          <textarea v-model="craftedItem" id="crafted-item-slot"></textarea>
         </div>
         <div id="dire-crafting-get-result">
-          <button type="submit"><font-awesome-icon :icon="['fas', 'play']" /></button>
-          <button>
-            <font-awesome-icon :icon="['fas', 'copy']"/>
-          </button>
+          <button @click="showRecipeText"><font-awesome-icon :icon="['fas', 'play']" /></button>
+          <button @click="copyToClipboard"><font-awesome-icon :icon="['fas', 'copy']"/></button>
         </div>
       </div>
     </div>
-    <div id="result">mods.avaritia.ExtremeCrafting.addShaped(null,<br>
-      [[null, null, null, null, null, null, null, null, null],<br>
-      [null, null, null, null, null, null, null, null, null],<br>
-      [null, null, null, null, null, null, null, null, null],<br>
-      [null, null, null, null, null, null, null, null, null],<br>
-      [null, null, null, null, null, null, null, null, null],<br>
-      [null, null, null, null, null, null, null, null, null],<br>
-      [null, null, null, null, null, null, null, null, null],<br>
-      [null, null, null, null, null, null, null, null, null],<br>
-      [null, null, null, null, null, null, null, null, null]]);
-    </div>
+    <div id="result" v-html="resultText" ref="result"></div>
   </div>
 
 </template>
@@ -45,7 +74,6 @@
 #page {
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
 
 #dire-crafting {
@@ -103,8 +131,8 @@ textarea {
 #dire-crafting-get-result {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  margin-left: 30px;
 }
 
 #dire-crafting-get-result > button {
@@ -126,6 +154,7 @@ textarea {
 #result {
   display: flex;
   justify-content: center;
+  margin-left: 40px;
   margin-top: 20px;
 }
 </style>

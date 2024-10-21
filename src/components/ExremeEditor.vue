@@ -5,12 +5,14 @@ export default {
     return {
       slots: Array(9).fill().map(() => Array(9).fill(null)),
       craftedItem: '',
-      resultText: ''
+      resultText: '',
+      isRecipeGenerated: false
     };
   },
   methods: {
     showRecipeText() {
       this.generateRecipeText();
+      this.isRecipeGenerated = true;
 
       this.$nextTick(() => {
         const resultElement = this.$refs.result;
@@ -25,7 +27,8 @@ export default {
           `${row.map(item => item === null ? 'null' : `'${item}'`).join(', ')}`
       ).join(',' + "<br>");
 
-      this.resultText = `mods.avaritia.ExtremeCrafting.addShaped(${this.craftedItem},<br>[[${formattedSlots}]]);`;
+      let craftedItem = this.craftedItem === "" ? "null" : this.craftedItem;
+      this.resultText = `mods.avaritia.ExtremeCrafting.addShaped(${craftedItem},<br>[[${formattedSlots}]]);`;
     },
 
     copyToClipboard() {
@@ -38,6 +41,16 @@ export default {
           .catch(err => {
             console.error('Ошибка при копировании: ', err);
           });
+    },
+
+    clearFields() {
+      const isConfirmed = confirm("Вы уверены, что хотите очистить рецепт и поля?");
+      if (isConfirmed) {
+        this.slots = Array(9).fill().map(() => Array(9).fill(null));
+        this.craftedItem = '';
+        this.resultText = '';
+        this.isRecipeGenerated = false;
+      }
     }
   }
 }
@@ -61,7 +74,8 @@ export default {
         </div>
         <div id="dire-crafting-get-result">
           <button @click="showRecipeText"><font-awesome-icon :icon="['fas', 'play']" /></button>
-          <button @click="copyToClipboard"><font-awesome-icon :icon="['fas', 'copy']"/></button>
+          <button v-if="isRecipeGenerated" @click="copyToClipboard"><font-awesome-icon :icon="['fas', 'copy']"/></button>
+          <button v-if="isRecipeGenerated" @click="clearFields" ><font-awesome-icon :icon="['fas', 'xmark']"/></button>
         </div>
       </div>
     </div>
@@ -148,6 +162,11 @@ textarea {
 
 #dire-crafting-get-result > button:nth-child(2) {
   background-color: #6250ff;
+  margin-top: 20px;
+}
+
+#dire-crafting-get-result > button:nth-child(3) {
+  background-color: #ff413f;
   margin-top: 20px;
 }
 

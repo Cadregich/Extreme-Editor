@@ -1,14 +1,17 @@
 <script>
 import DireCraftingEditor from "@/components/DireCraftingEditor.vue";
+import RegularCraftingEditor from "@/components/RegularCraftingEditor.vue";
+
 export default {
   name: 'ExtremeEditor',
-  components: {DireCraftingEditor},
+  components: {DireCraftingEditor, RegularCraftingEditor},
 }
 </script>
 
 <template>
   <div id="page">
     <dire-crafting-editor/>
+    <regular-crafting-editor/>
   </div>
 </template>
 
@@ -38,5 +41,33 @@ textarea {
   width: 80px;
   height: 80px;
   text-align: center;
+}
+
+.crafted-item-slot {
+  border-radius: 10px;
+  margin-left: 30px;
+  padding: 0;
+}
+
+.get-result-butt {
+  width: 60px;
+  height: 60px;
+  background-color: #33d65f;
+  border: 0;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 17px;
+}
+
+.copy-result-butt {
+  background-color: #6250ff;
+  margin-top: 20px;
+}
+
+.clear-editor-butt {
+  background-color: #ff413f;
+  margin-top: 20px;
+
 }
 </style>

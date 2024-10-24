@@ -1,18 +1,18 @@
 <script>
-import { RecipeMixin} from "@/mixins/RecipeMixin";
+import {RecipeMixin} from "@/mixins/RecipeMixin";
 
 export default {
-  name: 'DireCraftingEditor',
+  name: 'RegularCraftingEditor',
   mixins: [RecipeMixin],
   data() {
     return {
-      slots: Array(9).fill().map(() => Array(9).fill(null)),
+      slots: Array(3).fill().map(() => Array(3).fill(null)),
       craftedItem: ''
     };
   },
   methods: {
     handleGenerateRecipe() {
-      this.showRecipeText(this.slots, this.craftedItem, 'dire');
+      this.showRecipeText(this.slots, this.craftedItem, 'regular');
     },
 
     handleClearFields() {
@@ -24,24 +24,23 @@ export default {
 </script>
 
 <template>
-  <div id="dire-crafting">
+  <div id="regular-crafting">
     <div id="editor">
       <div id="crafting-slots">
-        <div v-for="row in 9" :key="row" :class="`row row-${row}`">
-          <div v-for="slot in 9" :key="slot">
+        <div v-for="row in 3" :key="row" :class="`row row-${row}`">
+          <div v-for="slot in 3" :key="slot">
             <textarea v-model="slots[row - 1][slot - 1]" :class="`slot slot-${slot * row}`"></textarea>
           </div>
           <br/>
         </div>
       </div>
       <div id="editor-right-side">
-        <div/>
         <div id="crafted-item-slot-block">
           <textarea v-model="craftedItem" class="crafted-item-slot"></textarea>
         </div>
         <div id="crafting-get-result">
           <button @click="handleGenerateRecipe" class="get-result-butt">
-            <font-awesome-icon :icon="['fas', 'play']" />
+            <font-awesome-icon :icon="['fas', 'play']"/>
           </button>
           <button v-if="isRecipeGenerated" @click="copyToClipboard" class="get-result-butt copy-result-butt">
             <font-awesome-icon :icon="['fas', 'copy']"/>
@@ -58,20 +57,15 @@ export default {
 
 
 <style scoped>
-#dire-crafting {
-  margin-top: 50px;
+#regular-crafting {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #editor {
   display: flex;
-  justify-content: center;
-}
-
-#crafting-slots {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 #editor-right-side {
@@ -79,22 +73,19 @@ export default {
   grid-template-rows: 1fr 1fr 1fr;
 }
 
-#crafted-item-slot-block {
-  display: flex;
-  align-items: center;
-}
-
 #crafting-get-result {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  align-items: end;
+  margin-bottom: 5px;
   margin-left: 30px;
 }
 
+#crafting-get-result > *:not(:first-child) {
+  margin-left: 20px;
+}
+
 #crafting-result {
-  display: flex;
-  justify-content: center;
-  margin-left: 40px;
   margin-top: 20px;
+  margin-bottom: 50px;
 }
 </style>

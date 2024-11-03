@@ -29,23 +29,23 @@ export default {
       <div id="crafting-slots">
         <div v-for="row in 3" :key="row" :class="`row row-${row}`">
           <div v-for="slot in 3" :key="slot">
-            <textarea v-model="slots[row - 1][slot - 1]" :class="`slot slot-${slot * row}`"></textarea>
+            <textarea class="slot-textarea" v-model="slots[row - 1][slot - 1]" :class="`slot slot-${slot * row}`"></textarea>
           </div>
           <br/>
         </div>
       </div>
       <div id="editor-right-side">
         <div id="crafted-item-slot-block">
-          <textarea v-model="craftedItem" class="crafted-item-slot"></textarea>
+          <textarea v-model="craftedItem" class="slot-textarea crafted-item-slot"></textarea>
         </div>
         <div id="crafting-get-result">
           <button @click="handleGenerateRecipe" class="get-result-butt">
             <font-awesome-icon :icon="['fas', 'play']"/>
           </button>
-          <button v-if="isRecipeGenerated" @click="copyToClipboard" class="get-result-butt copy-result-butt">
+          <button v-if="isRecipeGeneratedOrEditing" @click="copyToClipboard" class="get-result-butt copy-result-butt">
             <font-awesome-icon :icon="['fas', 'copy']"/>
           </button>
-          <button v-if="isRecipeGenerated" @click="handleClearFields" class="get-result-butt clear-editor-butt">
+          <button v-if="isRecipeGeneratedOrEditing" @click="handleClearFields" class="get-result-butt clear-editor-butt">
             <font-awesome-icon :icon="['fas', 'xmark']"/>
           </button>
         </div>

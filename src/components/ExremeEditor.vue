@@ -36,11 +36,35 @@ export default {
   border-radius: 10px;
 }
 
-textarea {
+.slot-textarea {
   resize: none;
   width: 80px;
   height: 80px;
   text-align: center;
+}
+
+label {
+  margin-bottom: 10px;
+}
+
+.paste-recipe {
+  width: 150px;
+  height: 150px;
+  border-radius: 20px;
+  resize: none;
+}
+
+.edit-recipe-buttons {
+  display: flex;
+}
+
+.edit-recipe-buttons > button:nth-child(2) {
+  margin-left: 8px;
+}
+
+.paste-recipe-butt {
+  background-color: #266bff !important;
+  margin-top: 8px;
 }
 
 .crafted-item-slot {

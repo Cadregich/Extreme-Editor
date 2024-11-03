@@ -2,7 +2,7 @@ export const RecipeMixin = {
     data() {
         return {
             resultText: '',
-            isRecipeGenerated: false
+            isRecipeGeneratedOrEditing: false,
         };
     },
     methods: {
@@ -21,7 +21,7 @@ export const RecipeMixin = {
 
         showRecipeText(slots, craftedItem, craftingType) {
             this.generateRecipeText(slots, craftedItem, craftingType);
-            this.isRecipeGenerated = true;
+            this.isRecipeGeneratedOrEditing = true;
 
             this.$nextTick(() => {
                 const resultElement = this.$refs.result;
@@ -47,8 +47,8 @@ export const RecipeMixin = {
             if (isConfirmed) {
                 slots.forEach(row => row.fill(null));
                 this.resultText = '';
-                this.isRecipeGenerated = false;
+                this.isRecipeGeneratedOrEditing = false;
             }
-        }
+        },
     }
 };

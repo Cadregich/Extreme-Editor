@@ -1,14 +1,29 @@
 <script>
 import { RecipeMixin} from "@/mixins/RecipeMixin";
+import EditRecipe from "@/components/EditRecipe.vue";
 
 export default {
   name: 'DireCraftingEditor',
+  components: {EditRecipe},
   mixins: [RecipeMixin],
   data() {
     return {
-      slots: Array(9).fill().map(() => Array(9).fill(null)),
       craftedItem: ''
-    };
+    }
+  },
+  computed: {
+    isSlotsNotEmpty() {
+      return this.slots.some(innerArray =>
+          innerArray.some(value => value !== null)
+      );
+    },
+
+    slots() {
+      return this.$store.getters.getDireCraftingSlots;
+    },
+  },
+  mounted() {
+    console.log(this.slots);
   },
   methods: {
     handleGenerateRecipe() {
@@ -18,7 +33,8 @@ export default {
     handleClearFields() {
       this.clearFields(this.slots);
       this.craftedItem = '';
-    }
+      this.$store.dispatch('clearRecipeRawText');
+    },
   }
 }
 </script>
@@ -29,24 +45,24 @@ export default {
       <div id="crafting-slots">
         <div v-for="row in 9" :key="row" :class="`row row-${row}`">
           <div v-for="slot in 9" :key="slot">
-            <textarea v-model="slots[row - 1][slot - 1]" :class="`slot slot-${slot * row}`"></textarea>
+            <textarea class="slot-textarea" v-model="slots[row - 1][slot - 1]" :class="`slot slot-${slot * row}`"></textarea>
           </div>
           <br/>
         </div>
       </div>
       <div id="editor-right-side">
-        <div/>
+        <edit-recipe/>
         <div id="crafted-item-slot-block">
-          <textarea v-model="craftedItem" class="crafted-item-slot"></textarea>
+          <textarea v-model="craftedItem" class="slot-textarea crafted-item-slot"></textarea>
         </div>
         <div id="crafting-get-result">
           <button @click="handleGenerateRecipe" class="get-result-butt">
             <font-awesome-icon :icon="['fas', 'play']" />
           </button>
-          <button v-if="isRecipeGenerated" @click="copyToClipboard" class="get-result-butt copy-result-butt">
+          <button v-if="isRecipeGeneratedOrEditing" @click="copyToClipboard" class="get-result-butt copy-result-butt">
             <font-awesome-icon :icon="['fas', 'copy']"/>
           </button>
-          <button v-if="isRecipeGenerated" @click="handleClearFields" class="get-result-butt clear-editor-butt">
+          <button v-if="isSlotsNotEmpty || isRecipeGeneratedOrEditing" @click="handleClearFields" class="get-result-butt clear-editor-butt">
             <font-awesome-icon :icon="['fas', 'xmark']"/>
           </button>
         </div>

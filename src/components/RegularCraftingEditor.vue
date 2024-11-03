@@ -4,11 +4,25 @@ import {RecipeMixin} from "@/mixins/RecipeMixin";
 export default {
   name: 'RegularCraftingEditor',
   mixins: [RecipeMixin],
-  data() {
-    return {
-      slots: Array(3).fill().map(() => Array(3).fill(null)),
-      craftedItem: ''
-    };
+  computed: {
+    isSlotsNotEmpty() {
+      return this.slots.some(innerArray =>
+          innerArray.some(value => value !== null)
+      );
+    },
+
+    slots() {
+      return this.$store.getters.getRegularCraftingSlots;
+    },
+
+    craftedItem: {
+      get() {
+        return this.$store.getters.getRegularCraftingCraftedItem;
+      },
+      set(value) {
+        this.$store.state.regularCraftingCraftedItem = value;
+      },
+    },
   },
   methods: {
     handleGenerateRecipe() {
@@ -45,7 +59,7 @@ export default {
           <button v-if="isRecipeGeneratedOrEditing" @click="copyToClipboard" class="get-result-butt copy-result-butt">
             <font-awesome-icon :icon="['fas', 'copy']"/>
           </button>
-          <button v-if="isRecipeGeneratedOrEditing" @click="handleClearFields" class="get-result-butt clear-editor-butt">
+          <button v-if="isSlotsNotEmpty || isRecipeGeneratedOrEditing" @click="handleClearFields" class="get-result-butt clear-editor-butt">
             <font-awesome-icon :icon="['fas', 'xmark']"/>
           </button>
         </div>

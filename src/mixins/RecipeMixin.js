@@ -47,6 +47,7 @@ export const RecipeMixin = {
             if (isConfirmed) {
                 slots.forEach(row => row.fill(null));
                 this.resultText = '';
+                this.$store.state.recipeRawText = '';
                 this.isRecipeGeneratedOrEditing = false;
             }
         },

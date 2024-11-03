@@ -6,11 +6,6 @@ export default {
   name: 'DireCraftingEditor',
   components: {EditRecipe},
   mixins: [RecipeMixin],
-  data() {
-    return {
-      craftedItem: ''
-    }
-  },
   computed: {
     isSlotsNotEmpty() {
       return this.slots.some(innerArray =>
@@ -20,6 +15,15 @@ export default {
 
     slots() {
       return this.$store.getters.getDireCraftingSlots;
+    },
+
+    craftedItem: {
+      get() {
+        return this.$store.getters.getDireCraftingCraftedItem;
+      },
+      set(value) {
+        this.$store.state.direCraftingCraftedItem = value;
+      },
     },
   },
   mounted() {
@@ -33,7 +37,6 @@ export default {
     handleClearFields() {
       this.clearFields(this.slots);
       this.craftedItem = '';
-      this.$store.dispatch('clearRecipeRawText');
     },
   }
 }

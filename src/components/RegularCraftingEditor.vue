@@ -1,8 +1,10 @@
 <script>
 import {RecipeMixin} from "@/mixins/RecipeMixin";
+import CraftingButtons from "@/components/CraftingButtons.vue";
 
 export default {
   name: 'RegularCraftingEditor',
+  components: {CraftingButtons},
   mixins: [RecipeMixin],
   computed: {
     isSlotsNotEmpty() {
@@ -30,8 +32,9 @@ export default {
     },
 
     handleClearFields() {
-      this.clearFields(this.slots);
-      this.craftedItem = '';
+      if (this.clearFields(this.slots)) {
+        this.craftedItem = '';
+      }
     }
   }
 }
@@ -56,17 +59,13 @@ export default {
         <div id="crafted-item-slot-block">
           <textarea v-model="craftedItem" class="slot-textarea crafted-item-slot"></textarea>
         </div>
-        <div id="crafting-get-result">
-          <button @click="handleGenerateRecipe" class="get-result-butt">
-            <font-awesome-icon :icon="['fas', 'play']"/>
-          </button>
-          <button v-if="isRecipeGeneratedOrEditing" @click="copyToClipboard" class="get-result-butt copy-result-butt">
-            <font-awesome-icon :icon="['fas', 'copy']"/>
-          </button>
-          <button v-if="isSlotsNotEmpty || isRecipeGeneratedOrEditing" @click="handleClearFields" class="get-result-butt clear-editor-butt">
-            <font-awesome-icon :icon="['fas', 'xmark']"/>
-          </button>
-        </div>
+        <CraftingButtons
+            :isSlotsNotEmpty="isSlotsNotEmpty"
+            :isRecipeGeneratedOrEditing="isRecipeGeneratedOrEditing"
+            @generateRecipe="handleGenerateRecipe"
+            @copyToClipboard="copyToClipboard"
+            @clearFields="handleClearFields"
+        />
       </div>
     </div>
     <div id="crafting-result" v-html="resultText" ref="result"></div>

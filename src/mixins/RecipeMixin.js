@@ -58,6 +58,7 @@ export const RecipeMixin = {
                 this.resultText = '';
                 this.$store.state.recipeRawText = '';
                 this.isRecipeGeneratedOrEditing = false;
+                return true;
             }
         },
     }

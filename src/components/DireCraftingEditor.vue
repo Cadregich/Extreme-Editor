@@ -1,10 +1,11 @@
 <script>
 import {RecipeMixin} from "@/mixins/RecipeMixin";
 import EditRecipe from "@/components/EditRecipe.vue";
+import CraftingButtons from "@/components/CraftingButtons.vue";
 
 export default {
   name: 'DireCraftingEditor',
-  components: {EditRecipe},
+  components: {CraftingButtons, EditRecipe},
   mixins: [RecipeMixin],
   computed: {
     isSlotsNotEmpty() {
@@ -35,8 +36,9 @@ export default {
     },
 
     handleClearFields() {
-      this.clearFields(this.slots);
-      this.craftedItem = '';
+      if (this.clearFields(this.slots)) {
+        this.craftedItem = '';
+      }
     },
   }
 }
@@ -68,22 +70,19 @@ export default {
           </div>
           <div/>
         </div>
-
-        <div id="crafting-get-result">
-          <button @click="handleGenerateRecipe" class="get-result-butt">
-            <font-awesome-icon :icon="['fas', 'play']"/>
-          </button>
-          <button v-if="isRecipeGeneratedOrEditing" @click="copyToClipboard" class="get-result-butt copy-result-butt">
-            <font-awesome-icon :icon="['fas', 'copy']"/>
-          </button>
-          <button v-if="isSlotsNotEmpty || isRecipeGeneratedOrEditing" @click="handleClearFields"
-                  class="get-result-butt clear-editor-butt">
-            <font-awesome-icon :icon="['fas', 'xmark']"/>
-          </button>
-        </div>
+        <CraftingButtons
+            :isSlotsNotEmpty="isSlotsNotEmpty"
+            :isRecipeGeneratedOrEditing="isRecipeGeneratedOrEditing"
+            @generateRecipe="handleGenerateRecipe"
+            @copyToClipboard="copyToClipboard"
+            @clearFields="handleClearFields"
+        />
       </div>
     </div>
-    <div id="crafting-result" v-html="resultText" ref="result"></div>
+    <div id="crafting-result-block">
+      <div id="crafting-result" v-html="resultText" ref="result"></div>
+    </div>
+
   </div>
 </template>
 
@@ -122,10 +121,9 @@ export default {
   margin-left: 30px;
 }
 
-#crafting-result {
+#crafting-result-block {
   display: flex;
   justify-content: center;
-  margin-left: 40px;
   margin-top: 20px;
 }
 </style>

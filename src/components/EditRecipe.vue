@@ -69,10 +69,11 @@ export default {
     },
 
     getItemsFromRawRecipe() {
-      const addShapedMatch = this.recipeRawText.match(/addShaped\(([^,]+)/);
-      const addShapedValue = addShapedMatch ? addShapedMatch[1].trim().replace(/^'|'$/g, '') : '';
+      const craftedItemMatch = this.recipeRawText.match(/addShaped\(([^,]+)/);
+      const trimmedValue = craftedItemMatch ? craftedItemMatch[1].trim().replace(/^'|'$/g, '') : '';
+      const craftedItem = trimmedValue === 'null' ? '' : trimmedValue;
 
-      console.log(addShapedValue);
+      console.log(craftedItem);
 
       const matches = this.recipeRawText.match(/(?<=\[\[)[^\]]+(?=\])/g);
       this.isRecipeGeneratedOrEditing = true;
@@ -82,7 +83,7 @@ export default {
         return trimmedItem === 'null' ? '' : trimmedItem;
       })) : [];
 
-      return { items, addShapedValue };
+      return { items, addShapedValue: craftedItem };
     },
 
     pasteFromClipboard() {
@@ -99,14 +100,14 @@ export default {
 </script>
 
 <template>
-  <div style="display: flex; flex-direction: column; margin-left: 30px">
+  <div id="edit-recipe">
     <label for="slot-textarea">Редактировать рецепт</label>
     <textarea v-model="recipeRawText" class="paste-recipe"/>
     <div class="edit-recipe-buttons">
-      <button @click="pasteFromClipboard" class="paste-recipe-butt get-result-butt">
+      <button @click="pasteFromClipboard" class="edit-recipe-butt paste-recipe-butt">
         <font-awesome-icon :icon="['fas', 'paste']"/>
       </button>
-      <button @click="editRecipe" class="paste-recipe-butt get-result-butt">
+      <button @click="editRecipe" class="edit-recipe-butt edit-recipe-submit-butt">
         <font-awesome-icon :icon="['fas', 'play']"/>
       </button>
     </div>
@@ -114,5 +115,35 @@ export default {
 </template>
 
 <style scoped>
+#edit-recipe {
+  display: flex;
+  flex-direction: column;
+  margin-left: 30px;
+}
 
+.paste-recipe {
+  width: 150px;
+  height: 150px;
+  border-radius: 15px;
+  resize: none;
+}
+
+.edit-recipe-buttons {
+  display: flex;
+}
+
+.edit-recipe-butt {
+  border: none;
+  border-radius: 10px;
+  height: 40px;
+  width: 40px;
+  color: white;
+  cursor: pointer;
+  background-color: #266bff;
+  margin-top: 8px;
+}
+
+.edit-recipe-submit-butt {
+  margin-left: 8px;
+}
 </style>

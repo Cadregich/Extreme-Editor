@@ -1,5 +1,5 @@
 <script>
-import { RecipeMixin} from "@/mixins/RecipeMixin";
+import {RecipeMixin} from "@/mixins/RecipeMixin";
 import EditRecipe from "@/components/EditRecipe.vue";
 
 export default {
@@ -48,24 +48,36 @@ export default {
       <div id="crafting-slots">
         <div v-for="row in 9" :key="row" :class="`row row-${row}`">
           <div v-for="slot in 9" :key="slot">
-            <textarea class="slot-textarea" v-model="slots[row - 1][slot - 1]" :class="`slot slot-${slot * row}`"></textarea>
+            <textarea class="slot-textarea" v-model="slots[row - 1][slot - 1]"
+                      :class="`slot slot-${slot * row}`"></textarea>
           </div>
           <br/>
         </div>
       </div>
       <div id="editor-right-side">
         <edit-recipe/>
-        <div id="crafted-item-slot-block">
-          <textarea v-model="craftedItem" class="slot-textarea crafted-item-slot"></textarea>
+        <div style="display: grid; grid-template-rows: 1fr 1fr 1fr">
+          <div style="display: flex; align-items: center; justify-content: center; margin-left: 10px">
+            <label style="display: flex; align-items: center;">
+              Удалять старый рецепт:
+              <input v-model="addRemoveOldRecipeText" class="removeOldRecipeCheckbox" type="checkbox" style="margin-left: 20px" />
+            </label>
+          </div>
+          <div id="crafted-item-slot-block">
+            <textarea v-model="craftedItem" class="slot-textarea crafted-item-slot"></textarea>
+          </div>
+          <div/>
         </div>
+
         <div id="crafting-get-result">
           <button @click="handleGenerateRecipe" class="get-result-butt">
-            <font-awesome-icon :icon="['fas', 'play']" />
+            <font-awesome-icon :icon="['fas', 'play']"/>
           </button>
           <button v-if="isRecipeGeneratedOrEditing" @click="copyToClipboard" class="get-result-butt copy-result-butt">
             <font-awesome-icon :icon="['fas', 'copy']"/>
           </button>
-          <button v-if="isSlotsNotEmpty || isRecipeGeneratedOrEditing" @click="handleClearFields" class="get-result-butt clear-editor-butt">
+          <button v-if="isSlotsNotEmpty || isRecipeGeneratedOrEditing" @click="handleClearFields"
+                  class="get-result-butt clear-editor-butt">
             <font-awesome-icon :icon="['fas', 'xmark']"/>
           </button>
         </div>

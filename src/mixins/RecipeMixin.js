@@ -3,6 +3,7 @@ export const RecipeMixin = {
         return {
             resultText: '',
             isRecipeGeneratedOrEditing: false,
+            addRemoveOldRecipeText: false
         };
     },
     methods: {
@@ -14,8 +15,16 @@ export const RecipeMixin = {
             let crafted = craftedItem === "" ? "null" : craftedItem;
             if (craftingType === 'regular') {
                 this.resultText = `recipes.addShaped(${crafted},<br>[[${formattedSlots}]]);`;
+
+                if (this.addRemoveOldRecipeText) {
+                    this.resultText = `recipes.removeShaped(${crafted});<br><br>${this.resultText}`
+                }
             } else if (craftingType === 'dire') {
                 this.resultText = `mods.avaritia.ExtremeCrafting.addShaped(${crafted},<br>[[${formattedSlots}]]);`;
+
+                if (this.addRemoveOldRecipeText) {
+                    this.resultText = `mods.avaritia.ExtremeCrafting.remove(${crafted});<br><br>${this.resultText}`;
+                }
             }
         },
 

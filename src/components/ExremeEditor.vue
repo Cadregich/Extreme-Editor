@@ -47,24 +47,8 @@ label {
   margin-bottom: 10px;
 }
 
-.paste-recipe {
-  width: 150px;
-  height: 150px;
-  border-radius: 20px;
-  resize: none;
-}
-
-.edit-recipe-buttons {
-  display: flex;
-}
-
-.edit-recipe-buttons > button:nth-child(2) {
-  margin-left: 8px;
-}
-
-.paste-recipe-butt {
-  background-color: #266bff !important;
-  margin-top: 8px;
+.removeOldRecipeCheckbox {
+  transform: scale(2);
 }
 
 .crafted-item-slot {

@@ -49,6 +49,10 @@ export default {
         </div>
       </div>
       <div id="editor-right-side">
+        <label style="display: flex; align-items: center; margin-left: 10px">
+          Удалять старый рецепт:
+          <input v-model="addRemoveOldRecipeText" class="removeOldRecipeCheckbox" type="checkbox" style="margin-left: 20px" />
+        </label>
         <div id="crafted-item-slot-block">
           <textarea v-model="craftedItem" class="slot-textarea crafted-item-slot"></textarea>
         </div>

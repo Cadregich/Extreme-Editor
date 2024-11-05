@@ -21,7 +21,6 @@ export default {
       const recipeItems = this.getItemsFromRawRecipe().items;
       const recipeCraftedItem = this.getItemsFromRawRecipe().addShapedValue;
       const recipeType = this.getRecipeType(recipeItems);
-
       const editorItemsArray = this.generateEditorItemsArray(recipeItems, recipeType);
 
       if (recipeType === 'dire') {
@@ -43,7 +42,6 @@ export default {
       } else if (recipeItems.length === 9) {
         return 'regular';
       }
-
       console.error(`Неизвестный тип рецепта: длина массива ${recipeItems.length} не соответствует ожидаемым значениям.`);
     },
 
@@ -54,7 +52,6 @@ export default {
       } else if (recipeType === 'regular') {
         arrayLength = 3;
       }
-
       const newArray = Array.from({ length: arrayLength }, () => Array(arrayLength).fill(null));
 
       for (let i = 0; i < arrayLength; i++) {
@@ -62,9 +59,6 @@ export default {
           newArray[i][j] = recipeItems[i * arrayLength + j] || null;
         }
       }
-
-      console.log(newArray);
-
       return newArray;
     },
 
@@ -72,9 +66,6 @@ export default {
       const craftedItemMatch = this.recipeRawText.match(/addShaped\(([^,]+)/);
       const trimmedValue = craftedItemMatch ? craftedItemMatch[1].trim().replace(/^'|'$/g, '') : '';
       const craftedItem = trimmedValue === 'null' ? '' : trimmedValue;
-
-      console.log(craftedItem);
-
       const matches = this.recipeRawText.match(/(?<=\[\[)[^\]]+(?=\])/g);
       this.isRecipeGeneratedOrEditing = true;
 

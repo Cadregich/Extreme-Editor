@@ -66,9 +66,10 @@ export default {
         </div>
       </div>
       <div id="editor-right-side">
-        <label style="display: flex; align-items: center; margin-left: 10px">
+        <label id="remove-old-recipe-label">
           Удалять старый рецепт:
-          <input v-model="addRemoveOldRecipeText" class="removeOldRecipeCheckbox" type="checkbox" style="margin-left: 20px" />
+          <input v-model="addRemoveOldRecipeText" class="removeOldRecipeCheckbox" type="checkbox"
+                 style="margin-left: 20px"/>
         </label>
         <div id="crafted-item-slot-block">
           <textarea v-model="craftedItem"
@@ -81,8 +82,7 @@ export default {
             :isRecipeGeneratedOrEditing="isRecipeGeneratedOrEditing"
             @generateRecipe="handleGenerateRecipe"
             @copyToClipboard="copyToClipboard"
-            @clearFields="handleClearFields"
-        />
+            @clearFields="handleClearFields"/>
       </div>
     </div>
     <div id="crafting-result" v-html="resultText" ref="result"></div>
@@ -105,6 +105,12 @@ export default {
 #editor-right-side {
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
+}
+
+#remove-old-recipe-label {
+  display: flex;
+  align-items: center;
+  margin-left: 10px
 }
 
 #crafting-get-result {

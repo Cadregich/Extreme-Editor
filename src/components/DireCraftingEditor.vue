@@ -27,9 +27,6 @@ export default {
       },
     },
   },
-  mounted() {
-    console.log(this.slots);
-  },
   methods: {
     handleGenerateRecipe() {
       this.showRecipeText(this.slots, this.craftedItem, 'dire');
@@ -42,12 +39,10 @@ export default {
     },
 
     handlePasteFromClipboard(event) {
-      console.log(event);
       this.fastPasteFromClipboard(event);
     },
 
     handleClearSlot(event) {
-      console.log(event);
       this.fastCleanSlot(event);
     }
   }

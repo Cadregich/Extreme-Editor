@@ -61,5 +61,45 @@ export const RecipeMixin = {
                 return true;
             }
         },
+
+        async fastPasteFromClipboard(event) {
+            let craftingSlot = !event.target.hasAttribute('data-row');
+
+            try {
+                const text = await navigator.clipboard.readText();
+                event.target.value = text;
+                if (!craftingSlot) {
+                    const row = parseInt(event.target.getAttribute('data-row'));
+                    const slot = parseInt(event.target.getAttribute('data-slot'));
+                    this.slots[row][slot] = text;
+                } else {
+                    this.craftedItem = text;
+                }
+
+            } catch (error) {
+                console.error('Не удалось вставить текст из буфера обмена:', error);
+            }
+        },
+
+        fastCleanSlot(event) {
+            let craftingSlot = !event.target.hasAttribute('data-row');
+
+            if (event.button === 2) {
+                event.preventDefault();
+                const currentTime = new Date().getTime();
+
+                if (currentTime - this.lastRightClickTime < 400) {
+                    if (!craftingSlot) {
+                        const row = parseInt(event.target.getAttribute('data-row'));
+                        const slot = parseInt(event.target.getAttribute('data-slot'));
+                        this.slots[row][slot] = '';
+                    } else {
+                        this.craftedItem = '';
+                    }
+                }
+
+                this.lastRightClickTime = currentTime;
+            }
+        }
     }
 };

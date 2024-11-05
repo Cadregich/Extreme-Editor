@@ -35,6 +35,14 @@ export default {
       if (this.clearFields(this.slots)) {
         this.craftedItem = '';
       }
+    },
+
+    handlePasteFromClipboard(event) {
+      this.fastPasteFromClipboard(event);
+    },
+
+    handleClearSlot(event) {
+      this.fastCleanSlot(event);
     }
   }
 }
@@ -44,9 +52,15 @@ export default {
   <div id="regular-crafting">
     <div id="editor">
       <div id="crafting-slots">
-        <div v-for="row in 3" :key="row" :class="`row row-${row}`">
-          <div v-for="slot in 3" :key="slot">
-            <textarea class="slot-textarea" v-model="slots[row - 1][slot - 1]" :class="`slot slot-${slot * row}`"></textarea>
+        <div v-for="(row, rowIndex) in 3" :key="row" :class="`row row-${row}`">
+          <div v-for="(slot, slotIndex) in 3" :key="slot">
+            <textarea class="slot-textarea"
+                      v-model="slots[rowIndex][slotIndex]"
+                      :data-row="rowIndex"
+                      :data-slot="slotIndex"
+                      @dblclick="handlePasteFromClipboard"
+                      @contextmenu="handleClearSlot"
+                      :class="`slot slot-${slot * row}`"></textarea>
           </div>
           <br/>
         </div>
@@ -57,7 +71,10 @@ export default {
           <input v-model="addRemoveOldRecipeText" class="removeOldRecipeCheckbox" type="checkbox" style="margin-left: 20px" />
         </label>
         <div id="crafted-item-slot-block">
-          <textarea v-model="craftedItem" class="slot-textarea crafted-item-slot"></textarea>
+          <textarea v-model="craftedItem"
+                    @dblclick="handlePasteFromClipboard"
+                    @contextmenu="handleClearSlot"
+                    class="slot-textarea crafted-item-slot"></textarea>
         </div>
         <CraftingButtons
             :isSlotsNotEmpty="isSlotsNotEmpty"

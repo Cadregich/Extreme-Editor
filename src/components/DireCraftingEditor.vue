@@ -10,7 +10,7 @@ export default {
   computed: {
     isSlotsNotEmpty() {
       return this.slots.some(innerArray =>
-          innerArray.some(value => value !== null)
+          innerArray.some(value => value !== null && value !== undefined && value !== '')
       );
     },
 
@@ -40,6 +40,16 @@ export default {
         this.craftedItem = '';
       }
     },
+
+    handlePasteFromClipboard(event) {
+      console.log(event);
+      this.fastPasteFromClipboard(event);
+    },
+
+    handleClearSlot(event) {
+      console.log(event);
+      this.fastCleanSlot(event);
+    }
   }
 }
 </script>
@@ -48,9 +58,14 @@ export default {
   <div id="dire-crafting">
     <div id="editor">
       <div id="crafting-slots">
-        <div v-for="row in 9" :key="row" :class="`row row-${row}`">
-          <div v-for="slot in 9" :key="slot">
-            <textarea class="slot-textarea" v-model="slots[row - 1][slot - 1]"
+        <div v-for="(row, rowIndex) in 9" :key="row" :class="`row row-${row}`">
+          <div v-for="(slot, slotIndex) in 9" :key="slot">
+            <textarea class="slot-textarea"
+                      v-model="slots[rowIndex][slotIndex]"
+                      :data-row="rowIndex"
+                      :data-slot="slotIndex"
+                      @dblclick="handlePasteFromClipboard"
+                      @contextmenu="handleClearSlot"
                       :class="`slot slot-${slot * row}`"></textarea>
           </div>
           <br/>
@@ -62,11 +77,15 @@ export default {
           <div style="display: flex; align-items: center; justify-content: center; margin-left: 10px">
             <label style="display: flex; align-items: center;">
               Удалять старый рецепт:
-              <input v-model="addRemoveOldRecipeText" class="removeOldRecipeCheckbox" type="checkbox" style="margin-left: 20px" />
+              <input v-model="addRemoveOldRecipeText" class="removeOldRecipeCheckbox" type="checkbox"
+                     style="margin-left: 20px"/>
             </label>
           </div>
           <div id="crafted-item-slot-block">
-            <textarea v-model="craftedItem" class="slot-textarea crafted-item-slot"></textarea>
+            <textarea @dblclick="handlePasteFromClipboard"
+                      @contextmenu="handleClearSlot"
+                      v-model="craftedItem"
+                      class="slot-textarea crafted-item-slot"></textarea>
           </div>
           <div/>
         </div>

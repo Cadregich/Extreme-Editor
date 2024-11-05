@@ -24,12 +24,14 @@ export default {
     onGenerateRecipe() {
       this.$emit('generateRecipe');
     },
+
     onCopyToClipboard() {
       this.$emit('copyToClipboard');
     },
+
     onClearFields() {
       this.$emit('clearFields');
-    },
+    }
   }
 }
 </script>

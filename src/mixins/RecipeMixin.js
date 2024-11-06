@@ -14,21 +14,25 @@ export const RecipeMixin = {
             ).join(',' + "<br>");
 
             let crafted = craftedItem === "" ? "null" : craftedItem;
+            let tempResultText = "";
+
             if (craftingType === 'regular') {
-                this.resultText = `recipes.addShaped(${crafted},<br>[[${formattedSlots}]]);`;
+                tempResultText = `recipes.addShaped(${crafted},<br>[[${formattedSlots}]]);`;
 
                 if (this.addRemoveOldRegularRecipeText) {
-                    this.resultText = `recipes.removeShaped(${crafted});<br><br>${this.resultText}`
+                    tempResultText = `recipes.removeShaped(${crafted});<br><br>${tempResultText}`;
                 }
             } else if (craftingType === 'dire') {
-                this.resultText = `mods.avaritia.ExtremeCrafting.addShaped(${crafted},<br>[[${formattedSlots}]]);`;
+                tempResultText = `mods.avaritia.ExtremeCrafting.addShaped(${crafted},<br>[[${formattedSlots}]]);`;
 
                 if (this.addRemoveOldDireRecipeText) {
-                    this.resultText = `mods.avaritia.ExtremeCrafting.remove(${crafted});<br><br>${this.resultText}`;
+                    tempResultText = `mods.avaritia.ExtremeCrafting.remove(${crafted});<br><br>${tempResultText}`;
                 } else if (this.addRemoveOldRegularRecipeText) {
-                    this.resultText = `recipes.removeShaped(${crafted});<br><br>${this.resultText}`
+                    tempResultText = `recipes.removeShaped(${crafted});<br><br>${tempResultText}`;
                 }
             }
+
+            this.resultText = this.replaceSpecialChars(tempResultText, true);
         },
 
         showRecipeText(slots, craftedItem, craftingType) {
@@ -44,7 +48,8 @@ export const RecipeMixin = {
         },
 
         copyToClipboard() {
-            const resultText = this.resultText.replace(/<br\s*\/?>/g, '\n');
+            let resultText = this.resultText.replace(/<br\s*\/?>/g, '\n');
+            resultText = this.replaceSpecialChars(resultText, false);
             navigator.clipboard.writeText(resultText)
                 .then(() => {
                     alert('Рецепт скопирован в буфер обмена!');
@@ -52,6 +57,18 @@ export const RecipeMixin = {
                 .catch(err => {
                     console.error('Ошибка при копировании: ', err);
                 });
+        },
+
+        replaceSpecialChars(text, toEntities = true) {
+            if (toEntities) {
+                return text
+                    .replace(/<(?!br\s*\/?>)/gi, '&lt;')
+                    .replace(/(?<!<br\s*)>/gi, '&gt;');
+            } else {
+                return text
+                    .replace(/&lt;/gi, '<')
+                    .replace(/&gt;/gi, '>');
+            }
         },
 
         clearFields(slots) {
@@ -78,7 +95,6 @@ export const RecipeMixin = {
                 } else {
                     this.craftedItem = text;
                 }
-
             } catch (error) {
                 console.error('Не удалось вставить текст из буфера обмена:', error);
             }
@@ -86,11 +102,10 @@ export const RecipeMixin = {
 
         fastCleanSlot(event) {
             let craftingSlot = !event.target.hasAttribute('data-row');
-
+            // Проверяем кликнул ли пользователь 2 раза ПКМ для очистки слота
             if (event.button === 2) {
                 event.preventDefault();
                 const currentTime = new Date().getTime();
-
                 if (currentTime - this.lastRightClickTime < 400) {
                     if (!craftingSlot) {
                         const row = parseInt(event.target.getAttribute('data-row'));

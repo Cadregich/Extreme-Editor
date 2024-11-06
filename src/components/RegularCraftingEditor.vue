@@ -68,7 +68,7 @@ export default {
       <div id="editor-right-side">
         <label id="remove-old-recipe-label">
           Удалять старый рецепт:
-          <input v-model="addRemoveOldRecipeText" class="removeOldRecipeCheckbox" type="checkbox"
+          <input v-model="addRemoveOldRegularRecipeText" class="remove-old-recipe-checkbox" type="checkbox"
                  style="margin-left: 20px"/>
         </label>
         <div id="crafted-item-slot-block">

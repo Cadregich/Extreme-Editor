@@ -47,7 +47,7 @@ label {
   margin-bottom: 10px;
 }
 
-.removeOldRecipeCheckbox {
+.remove-old-recipe-checkbox {
   transform: scale(2);
 }
 

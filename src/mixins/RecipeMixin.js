@@ -3,7 +3,8 @@ export const RecipeMixin = {
         return {
             resultText: '',
             isRecipeGeneratedOrEditing: false,
-            addRemoveOldRecipeText: false
+            addRemoveOldDireRecipeText: false,
+            addRemoveOldRegularRecipeText: false,
         };
     },
     methods: {
@@ -16,14 +17,16 @@ export const RecipeMixin = {
             if (craftingType === 'regular') {
                 this.resultText = `recipes.addShaped(${crafted},<br>[[${formattedSlots}]]);`;
 
-                if (this.addRemoveOldRecipeText) {
+                if (this.addRemoveOldRegularRecipeText) {
                     this.resultText = `recipes.removeShaped(${crafted});<br><br>${this.resultText}`
                 }
             } else if (craftingType === 'dire') {
                 this.resultText = `mods.avaritia.ExtremeCrafting.addShaped(${crafted},<br>[[${formattedSlots}]]);`;
 
-                if (this.addRemoveOldRecipeText) {
+                if (this.addRemoveOldDireRecipeText) {
                     this.resultText = `mods.avaritia.ExtremeCrafting.remove(${crafted});<br><br>${this.resultText}`;
+                } else if (this.addRemoveOldRegularRecipeText) {
+                    this.resultText = `recipes.removeShaped(${crafted});<br><br>${this.resultText}`
                 }
             }
         },
@@ -101,5 +104,5 @@ export const RecipeMixin = {
                 this.lastRightClickTime = currentTime;
             }
         }
-    }
+    },
 };

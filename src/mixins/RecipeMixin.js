@@ -110,9 +110,9 @@ export const RecipeMixin = {
                     if (!craftingSlot) {
                         const row = parseInt(event.target.getAttribute('data-row'));
                         const slot = parseInt(event.target.getAttribute('data-slot'));
-                        this.slots[row][slot] = '';
+                        this.slots[row][slot] = null;
                     } else {
-                        this.craftedItem = '';
+                        this.craftedItem = null;
                     }
                 }
 

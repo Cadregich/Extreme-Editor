@@ -5,7 +5,7 @@
 ## Как использовать:
 
 1. Скачай последний релиз и запусти файл `Extreme_Editor.html`.
-2. Использование интуитивно понятное и строится на вставке текста о предмете, получаемым через команду из `/mt_hand`, который игрок держит в руке, в поля, представляющие собой слоты для крафта.
+2. Использование интуитивно понятное и строится на вставке текста о предмете, получаемым через команду из `/mt hand`, который игрок держит в руке, в поля, представляющие собой слоты для крафта.
 3. После этого можно сгенерировать итоговый вариант рецепта.
 
 Использование редактора в разы удобнее, чем вставлять текст самостоятельно, и экономит кучу времени.
@@ -22,7 +22,7 @@ A convenient tool for generating custom recipes for both regular and extreme cra
 ## How to Use:
 
 1. Download the latest release and run the `Extreme_Editor.html` file.
-2. The interface is intuitive and based on inserting the item description, obtained via the `/mt_hand` command, which the player is holding, into the fields representing the crafting slots.
+2. The interface is intuitive and based on inserting the item description, obtained via the `/mt hand` command, which the player is holding, into the fields representing the crafting slots.
 3. Afterward, you can generate the final recipe.
 
 Using the editor is much more convenient than inserting the text manually, saving you a lot of time.

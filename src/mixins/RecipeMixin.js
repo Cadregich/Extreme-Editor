@@ -9,21 +9,21 @@ export const RecipeMixin = {
     },
     methods: {
         generateRecipeText(slots, craftedItem, craftingType) {
-            const formattedSlots = slots.map(row =>
-                `${row.map(item => item === null ? 'null' : `${item}`).join(', ')}`
-            ).join(',' + "<br>");
+            const formattedSlots = `[${slots.map(row =>
+                `[${row.map(item => item === null ? 'null' : `${item}`).join(', ')}]`
+            ).join(',<br>')}]`;
 
             let crafted = craftedItem === "" ? "null" : craftedItem;
             let tempResultText = "";
 
             if (craftingType === 'regular') {
-                tempResultText = `recipes.addShaped(${crafted},<br>[[${formattedSlots}]]);`;
+                tempResultText = `recipes.addShaped(${crafted},<br>${formattedSlots});`;
 
                 if (this.addRemoveOldRegularRecipeText) {
                     tempResultText = `recipes.removeShaped(${crafted});<br><br>${tempResultText}`;
                 }
             } else if (craftingType === 'dire') {
-                tempResultText = `mods.avaritia.ExtremeCrafting.addShaped(${crafted},<br>[[${formattedSlots}]]);`;
+                tempResultText = `mods.avaritia.ExtremeCrafting.addShaped(${crafted},<br>${formattedSlots});`;
 
                 if (this.addRemoveOldDireRecipeText) {
                     tempResultText = `mods.avaritia.ExtremeCrafting.remove(${crafted});<br><br>${tempResultText}`;

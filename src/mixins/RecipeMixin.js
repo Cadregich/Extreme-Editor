@@ -10,7 +10,7 @@ export const RecipeMixin = {
     methods: {
         generateRecipeText(slots, craftedItem, craftingType) {
             const formattedSlots = slots.map(row =>
-                `${row.map(item => item === null ? 'null' : `'${item}'`).join(', ')}`
+                `${row.map(item => item === null ? 'null' : `${item}`).join(', ')}`
             ).join(',' + "<br>");
 
             let crafted = craftedItem === "" ? "null" : craftedItem;

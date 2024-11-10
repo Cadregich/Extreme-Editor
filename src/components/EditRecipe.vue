@@ -37,6 +37,7 @@ export default {
     },
 
     getRecipeType(recipeItems) {
+      console.log(recipeItems);
       if (recipeItems.length === 81) {
         return 'dire';
       } else if (recipeItems.length === 9) {
@@ -66,16 +67,21 @@ export default {
       const craftedItemMatch = this.recipeRawText.match(/addShaped\(([^,]+)/);
       const trimmedValue = craftedItemMatch ? craftedItemMatch[1].trim().replace(/^'|'$/g, '') : '';
       const craftedItem = trimmedValue === 'null' ? '' : trimmedValue;
-      const matches = this.recipeRawText.match(/(?<=\[\[)[^\]]+(?=\])/g);
+      const matches = this.recipeRawText.match(/(?<=\[\[)[\s\S]+(?=\]\])/g);
       this.isRecipeGeneratedOrEditing = true;
 
-      const items = matches ? matches.flatMap(item => item.split(',').map(i => {
-        const trimmedItem = i.trim().replace(/^'|'$/g, '');
-        return trimmedItem === 'null' ? '' : trimmedItem;
-      })) : [];
+      const items = matches ? matches.flatMap(item =>
+          item.split('],').flatMap(row =>
+              row.replace(/[[\]\s]/g, '').split(',').map(i => {
+                const trimmedItem = i.trim().replace(/^'|'$/g, '');
+                return trimmedItem === 'null' ? '' : trimmedItem;
+              })
+          )
+      ) : [];
 
       return { items, addShapedValue: craftedItem };
     },
+
 
     pasteFromClipboard() {
       navigator.clipboard.readText()
